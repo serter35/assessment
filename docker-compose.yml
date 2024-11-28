@@ -1,0 +1,52 @@
+services:
+    # Laravel app servisi
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: laravel-app
+        container_name: insider-assessment-app
+        ports:
+            - "8080:8080"
+        networks:
+            - insider_assessment_network
+        volumes:
+            - .:/var/www/html
+        environment:
+            - APP_ENV=local
+            - APP_DEBUG=true
+        depends_on:
+            - mysql
+            - redis
+        entrypoint: [ "/usr/local/bin/entrypoint.sh" ]
+        command: [ "sh", "-c", "php artisan serve --host=0.0.0.0 --port=8080" ]
+
+    # MySQL servisi
+    mysql:
+        image: mysql:8.0
+        container_name: insider-assessment-mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: df8d04mmf93k93kf
+            MYSQL_DATABASE: insider_assessment_db
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - insider_assessment_network
+
+    # Redis servisi
+    redis:
+        image: redis:latest
+        container_name: insider-assessment-redis
+        ports:
+            - "6379:6379"
+        networks:
+            - insider_assessment_network
+
+networks:
+    insider_assessment_network:
+        driver: bridge
+
+volumes:
+    mysql_data:
