@@ -2,7 +2,7 @@
 
 1- Docker Build ve Laravel Installation işlemleri için aşağıdaki komutu çalıştırınız.
 ```bash
-docker-compose up -d --build
+docker-compose up --build
 ```
 
 2- Mesaj gönderilecek alıcıların oluşturulabilmesi için sahte veriler oluşturulmalıdır.
